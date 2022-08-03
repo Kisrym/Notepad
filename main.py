@@ -5,6 +5,8 @@ class notepad(QtWidgets.QMainWindow):
         super(notepad, self).__init__()
         uic.loadUi(r"janelas\notepad.ui", self)
         
+        self.setWindowTitle("Sem título - Notepad")
+        self.texto.textChanged.connect(self.window_name)
         self.current_file = None
 
         # Conectando os sinais
@@ -14,7 +16,8 @@ class notepad(QtWidgets.QMainWindow):
         self.actionSair.triggered.connect(lambda: self.close())
         self.actionNova_Janela.triggered.connect(self.nova_janela)
         self.actionNovo.triggered.connect(self.novo)
-        
+    
+    ## Funções
     def novo(self):
         if self.current_file == None and self.texto.toPlainText() != "":
             resposta = QtWidgets.QMessageBox.question(self, 'Bloco de notas', 'Deseja salvar as alterações?', QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard | QtWidgets.QMessageBox.Cancel)
@@ -32,6 +35,7 @@ class notepad(QtWidgets.QMainWindow):
                         self.salvar()
         
         self.texto.setText("")
+        self.setWindowTitle("Sem título - Notepad")
         self.current_file = None
     
     def nova_janela(self):
@@ -61,8 +65,9 @@ class notepad(QtWidgets.QMainWindow):
             
             # Salvando o diretório do arquivo
             self.current_file = fname[0]
+            self.setWindowTitle(fname[0].split("/")[-1] + " - Notepad")
     
-    
+    ## Eventos
     def closeEvent(self, event):
         if self.texto.toPlainText() == "":
             event.accept()
@@ -83,6 +88,15 @@ class notepad(QtWidgets.QMainWindow):
                 
             elif resposta == QtWidgets.QMessageBox.Cancel:
                 event.ignore()
+    
+    # Muda o nome do arquivo
+    def window_name(self):
+        (lambda: self.setWindowTitle(f"*{self.windowTitle()}") if self.windowTitle()[0] != "*" and self.texto.toPlainText() != "" else self.setWindowTitle(self.windowTitle()[1:]))
+        if self.windowTitle()[0] != "*" and self.texto.toPlainText() != "":
+            self.setWindowTitle(f"*{self.windowTitle()}")
+        elif self.texto.toPlainText() == "":
+            self.setWindowTitle(self.windowTitle()[1:])
+            
 
 app = QtWidgets.QApplication([])
 
