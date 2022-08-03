@@ -5,6 +5,8 @@ class notepad(QtWidgets.QMainWindow):
         super(notepad, self).__init__()
         uic.loadUi(r"janelas\notepad.ui", self)
         
+        self.question = lambda: QtWidgets.QMessageBox.question(self, 'Bloco de notas', 'Deseja salvar as alterações?', QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard | QtWidgets.QMessageBox.Cancel)
+        
         self.setWindowTitle("Sem título - Notepad")
         self.texto.textChanged.connect(self.window_name)
         self.current_file = None
@@ -20,19 +22,26 @@ class notepad(QtWidgets.QMainWindow):
     ## Funções
     def novo(self):
         if self.current_file == None and self.texto.toPlainText() != "":
-            resposta = QtWidgets.QMessageBox.question(self, 'Bloco de notas', 'Deseja salvar as alterações?', QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard | QtWidgets.QMessageBox.Cancel)
+            resposta = self.question()
             
             if resposta == QtWidgets.QMessageBox.Save:
                 if self.texto.toPlainText() != "" and self.current_file == None:
                     self.salvar_como()
+            
+            elif resposta == QtWidgets.QMessageBox.Cancel:
+                return
         
         elif self.current_file != None:
             with open(self.current_file, "r", encoding='utf-8', errors="ignore") as f:
                 if self.texto.toPlainText() != f.read():
-                    resposta = QtWidgets.QMessageBox.question(self, 'Bloco de notas', 'Deseja salvar as alterações?', QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard | QtWidgets.QMessageBox.Cancel)
+                    resposta = self.question()
                     
                     if resposta == QtWidgets.QMessageBox.Save:
                         self.salvar()
+                    
+                    elif resposta == QtWidgets.QMessageBox.Cancel:
+                        return
+        # arrumar
         
         self.texto.setText("")
         self.setWindowTitle("Sem título - Notepad")
@@ -48,6 +57,9 @@ class notepad(QtWidgets.QMainWindow):
         if fname[0] != "":
             with open(fname[0], "w") as f:
                 f.write(self.texto.toPlainText())
+                
+        self.setWindowTitle(fname[0].split("/")[-1] + " - Notepad")
+        self.current_file = fname[0]
     
     def salvar(self):
         if self.texto.toPlainText() != "" and self.current_file == None:
@@ -70,10 +82,19 @@ class notepad(QtWidgets.QMainWindow):
     ## Eventos
     def closeEvent(self, event):
         if self.texto.toPlainText() == "":
-            event.accept()
+            with open(self.current_file, "r", encoding='utf-8', errors='ignore') as f:
+                if f.read() != self.texto.toPlainText():
+                    resposta = self.question()
+                    
+                    if resposta == QtWidgets.QMessageBox.Save:
+                        self.salvar()
+                    
+                    elif resposta == QtWidgets.QMessageBox.Cancel:
+                        event.ignore()
+                        return
         
         else:
-            resposta = QtWidgets.QMessageBox.question(self, 'Bloco de notas', 'Deseja salvar as alterações?', QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard | QtWidgets.QMessageBox.Cancel)
+            resposta = self.question()
             
             if resposta == QtWidgets.QMessageBox.Save:
                 if self.texto.toPlainText() != "" and self.current_file == None:
@@ -89,12 +110,11 @@ class notepad(QtWidgets.QMainWindow):
             elif resposta == QtWidgets.QMessageBox.Cancel:
                 event.ignore()
     
-    # Muda o nome do arquivo
+    # Muda o nome da janela
     def window_name(self):
-        (lambda: self.setWindowTitle(f"*{self.windowTitle()}") if self.windowTitle()[0] != "*" and self.texto.toPlainText() != "" else self.setWindowTitle(self.windowTitle()[1:]))
         if self.windowTitle()[0] != "*" and self.texto.toPlainText() != "":
             self.setWindowTitle(f"*{self.windowTitle()}")
-        elif self.texto.toPlainText() == "":
+        elif self.texto.toPlainText() == "" and self.current_file == None:
             self.setWindowTitle(self.windowTitle()[1:])
             
 

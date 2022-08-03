@@ -65,11 +65,20 @@
     <property name="title">
      <string>Editar</string>
     </property>
+    <addaction name="actionDesfazer"/>
+    <addaction name="separator"/>
+    <addaction name="actionRecortar"/>
+    <addaction name="actionCopiar"/>
+    <addaction name="actionColar"/>
+    <addaction name="actionExcluir"/>
+    <addaction name="separator"/>
+    <addaction name="actionLocalizar"/>
    </widget>
    <widget class="QMenu" name="menuFormatar">
     <property name="title">
      <string>Formatar</string>
     </property>
+    <addaction name="actionFonte"/>
    </widget>
    <addaction name="menuArquivo"/>
    <addaction name="menuEditar"/>
@@ -103,6 +112,59 @@
   <action name="actionSair">
    <property name="text">
     <string>Sair</string>
+   </property>
+  </action>
+  <action name="actionDesfazer">
+   <property name="text">
+    <string>Desfazer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRecortar">
+   <property name="text">
+    <string>Recortar</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionCopiar">
+   <property name="text">
+    <string>Copiar</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionColar">
+   <property name="text">
+    <string>Colar</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionExcluir">
+   <property name="text">
+    <string>Excluir</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="actionLocalizar">
+   <property name="text">
+    <string>Localizar...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionFonte">
+   <property name="text">
+    <string>Fonte...</string>
    </property>
   </action>
  </widget>
