@@ -1,4 +1,5 @@
 from PyQt5 import uic, QtWidgets
+from pyautogui import hotkey
 
 class notepad(QtWidgets.QMainWindow):
     def __init__(self):
@@ -18,6 +19,15 @@ class notepad(QtWidgets.QMainWindow):
         self.actionSair.triggered.connect(lambda: self.close())
         self.actionNova_Janela.triggered.connect(self.nova_janela)
         self.actionNovo.triggered.connect(self.novo)
+        
+        self.actionLocalizar.triggered.connect(self.localizar)
+        
+        # Colocando as funções de hotkey
+        self.actionDesfazer.triggered.connect(lambda: hotkey("ctrl", "z"))
+        self.actionRecortar.triggered.connect(lambda: hotkey("ctrl", "x"))
+        self.actionCopiar.triggered.connect(lambda: hotkey("ctrl", "c"))
+        self.actionColar.triggered.connect(lambda: hotkey("ctrl", "v"))
+        self.actionExcluir.triggered.connect(lambda: hotkey("del"))
     
     ## Funções
     def novo(self):
@@ -41,7 +51,6 @@ class notepad(QtWidgets.QMainWindow):
                     
                     elif resposta == QtWidgets.QMessageBox.Cancel:
                         return
-        # arrumar
         
         self.texto.setText("")
         self.setWindowTitle("Sem título - Notepad")
@@ -78,20 +87,26 @@ class notepad(QtWidgets.QMainWindow):
             # Salvando o diretório do arquivo
             self.current_file = fname[0]
             self.setWindowTitle(fname[0].split("/")[-1] + " - Notepad")
+            
+    def localizar(self):
+        pass
     
     ## Eventos
     def closeEvent(self, event):
         if self.texto.toPlainText() == "":
-            with open(self.current_file, "r", encoding='utf-8', errors='ignore') as f:
-                if f.read() != self.texto.toPlainText():
-                    resposta = self.question()
-                    
-                    if resposta == QtWidgets.QMessageBox.Save:
-                        self.salvar()
-                    
-                    elif resposta == QtWidgets.QMessageBox.Cancel:
-                        event.ignore()
-                        return
+            try:
+                with open(self.current_file, "r", encoding='utf-8', errors='ignore') as f:
+                    if f.read() != self.texto.toPlainText():
+                        resposta = self.question()
+                        
+                        if resposta == QtWidgets.QMessageBox.Save:
+                            self.salvar()
+                        
+                        elif resposta == QtWidgets.QMessageBox.Cancel:
+                            event.ignore()
+                            return
+            except TypeError:
+                event.accept()
         
         else:
             resposta = self.question()
