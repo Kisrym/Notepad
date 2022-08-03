@@ -53,8 +53,13 @@
     <property name="title">
      <string>Arquivo</string>
     </property>
-    <addaction name="actionSalvar"/>
+    <addaction name="actionNovo"/>
+    <addaction name="actionNova_Janela"/>
     <addaction name="actionAbrir"/>
+    <addaction name="actionSalvar"/>
+    <addaction name="actionSalvar_como"/>
+    <addaction name="separator"/>
+    <addaction name="actionSair"/>
    </widget>
    <widget class="QMenu" name="menuEditar">
     <property name="title">
@@ -77,7 +82,27 @@
   </action>
   <action name="actionAbrir">
    <property name="text">
-    <string>Abrir</string>
+    <string>Abrir...</string>
+   </property>
+  </action>
+  <action name="actionNovo">
+   <property name="text">
+    <string>Novo</string>
+   </property>
+  </action>
+  <action name="actionNova_Janela">
+   <property name="text">
+    <string>Nova Janela</string>
+   </property>
+  </action>
+  <action name="actionSalvar_como">
+   <property name="text">
+    <string>Salvar como...</string>
+   </property>
+  </action>
+  <action name="actionSair">
+   <property name="text">
+    <string>Sair</string>
    </property>
   </action>
  </widget>
