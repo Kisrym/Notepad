@@ -58,10 +58,10 @@ def abrir():
     ## Conectando os botões
     open_window.pushButton.clicked.connect(abrir_arquivo)
     open_window.pushButton_2.clicked.connect(cancelar)
-    
-notepad.Salvar.clicked.connect(salvar)
-notepad.Abrir.clicked.connect(abrir)
+
+notepad.actionSalvar.triggered.connect(salvar)
+notepad.actionAbrir.triggered.connect(abrir)
+
 
 notepad.show()
-notepad.setFixedSize(805, 600)
 app.exec()
