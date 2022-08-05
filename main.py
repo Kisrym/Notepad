@@ -1,4 +1,4 @@
-from PyQt5 import uic, QtWidgets
+from PyQt5 import uic, QtWidgets, QtGui
 from pyautogui import hotkey
 
 class notepad(QtWidgets.QMainWindow):
@@ -21,6 +21,8 @@ class notepad(QtWidgets.QMainWindow):
         self.actionNovo.triggered.connect(self.novo)
         
         self.actionLocalizar.triggered.connect(self.localizar)
+        
+        self.actionFonte.triggered.connect(lambda: fonte_window.show())
         
         # Colocando as funções de hotkey
         self.actionDesfazer.triggered.connect(lambda: hotkey("ctrl", "z"))
@@ -131,11 +133,53 @@ class notepad(QtWidgets.QMainWindow):
             self.setWindowTitle(f"*{self.windowTitle()}")
         elif self.texto.toPlainText() == "" and self.current_file == None:
             self.setWindowTitle(self.windowTitle()[1:])
-            
 
+class fonte(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(fonte, self).__init__()
+        uic.loadUi(r"janelas\fonte.ui", self)
+        
+        # Aplicando o tamanho das fontes
+        for n in [*range(8, 13), *range(14, 29, 2), 36, 48, 72]:
+            self.tamanho.addItem(str(n))
+        self.tamanho.setCurrentIndex(2)
+        
+        # Colocando o exemplo default
+        self.exemplo.setFont(QtGui.QFont(self.fonte.currentText(), int(self.tamanho.currentText())))
+        
+        # Funções
+        self.fonte.currentIndexChanged.connect(self.change_font)
+        self.tamanho.currentIndexChanged.connect(self.change_font)
+        self.estilo.currentIndexChanged.connect(self.change_font_style)
+        
+    def change_font(self):
+        self.exemplo.setFont(QtGui.QFont(self.fonte.currentText(), int(self.tamanho.currentText())))
+        notepad_window.texto.setFont(QtGui.QFont(self.fonte.currentText(), int(self.tamanho.currentText())))
+        
+    def change_font_style(self):
+        estilo = self.estilo.currentText()
+        
+        match (estilo):
+            case "Itálico":
+                self.exemplo.setStyleSheet("font-style: italic;")
+                notepad_window.texto.setStyleSheet("margin: -200;font-style: italic;")
+                
+            case "Negrito":
+                self.exemplo.setStyleSheet("font-weight: bold;")
+                notepad_window.texto.setStyleSheet("margin: -200;font-weight: bold;")
+                
+            case "Itálico e Negrito":
+                self.exemplo.setStyleSheet("font-style: italic; font-weight: bold;")
+                notepad_window.texto.setStyleSheet("margin: -200;font-style: italic; font-weight: bold;")
+            
+            case "Regular":
+                self.exemplo.setStyleSheet("")
+                notepad_window.texto.setStyleSheet("margin: -200;")  
+        
 app = QtWidgets.QApplication([])
 
 notepad_window = notepad()
+fonte_window = fonte()
 
 notepad_window.show()
 app.exec()
