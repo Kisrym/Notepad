@@ -17,7 +17,7 @@ class notepad(QtWidgets.QMainWindow):
         self.actionAbrir.triggered.connect(self.abrir)
         self.actionSalvar.triggered.connect(self.salvar)
         self.actionSair.triggered.connect(lambda: self.close())
-        self.actionNova_Janela.triggered.connect(lambda: notepad_window.show())
+        self.actionNova_Janela.triggered.connect(self.nova_janela)
         self.actionNovo.triggered.connect(self.novo)
         
         self.actionLocalizar.triggered.connect(lambda: localizar_window.show())
@@ -31,7 +31,10 @@ class notepad(QtWidgets.QMainWindow):
         self.actionColar.triggered.connect(lambda: hotkey("ctrl", "v"))
         self.actionExcluir.triggered.connect(lambda: hotkey("del"))
         
-        if QtGui.QKeySequence("Ctrl+F") == True: self.actionLocalizar
+        atalhos = {"Ctrl+N" : self.novo, "Ctrl+O" : self.abrir, "Ctrl+S" : self.salvar, "Ctrl+Shift+S" : self.salvar_como, "Ctrl+Shift+N" : self.nova_janela, "Ctrl+F" : self.actionLocalizar}
+        for keys in atalhos.keys():
+            if QtGui.QKeySequence(keys) == True:
+                atalhos[keys]()
     
     ## Funções
     def novo(self):
@@ -75,7 +78,7 @@ class notepad(QtWidgets.QMainWindow):
             self.current_file = fname[0]
     
     def salvar(self):
-        if self.texto.toPlainText() != "" and self.current_file == None:
+        if self.texto.toPlainText() == "" and self.current_file == None:
             self.salvar_como()
         else:
             with open(self.current_file, "w") as f:
@@ -199,7 +202,7 @@ class localizar(QtWidgets.QMainWindow):
                 p = notepad_window.texto.find(self.word.text())
                 
                 
-        if not p:
+        if not p: # Se não encontrou nada
             if not self.around.isChecked():
                 QtWidgets.QMessageBox.information(self, "Notepad", f'Não é possível encontrar "{self.word.text()}"')
             else:
@@ -208,7 +211,7 @@ class localizar(QtWidgets.QMainWindow):
                 else:
                     notepad_window.texto.moveCursor(QtGui.QTextCursor.Start)
                     
-                if self.word.text() not in notepad_window.texto.toPlainText():
+                if self.word.text() not in notepad_window.texto.toPlainText(): # Se, mesmo assim não encontrar, o termo não está no texto
                     QtWidgets.QMessageBox.information(self, "Notepad", f'Não é possível encontrar "{self.word.text()}"')
         
 app = QtWidgets.QApplication([])
