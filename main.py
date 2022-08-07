@@ -6,7 +6,7 @@ class notepad(QtWidgets.QMainWindow):
         super(notepad, self).__init__()
         uic.loadUi(r"janelas\notepad.ui", self)
         
-        self.question = lambda: QtWidgets.QMessageBox.question(self, 'Bloco de notas', 'Deseja salvar as alterações?', QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard | QtWidgets.QMessageBox.Cancel)
+        self.question = lambda: QtWidgets.QMessageBox.question(self, 'Notepad', 'Deseja salvar as alterações?', QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard | QtWidgets.QMessageBox.Cancel)
         
         self.setWindowTitle("Sem título - Notepad")
         self.texto.textChanged.connect(self.window_name)
@@ -17,10 +17,10 @@ class notepad(QtWidgets.QMainWindow):
         self.actionAbrir.triggered.connect(self.abrir)
         self.actionSalvar.triggered.connect(self.salvar)
         self.actionSair.triggered.connect(lambda: self.close())
-        self.actionNova_Janela.triggered.connect(self.nova_janela)
+        self.actionNova_Janela.triggered.connect(lambda: notepad_window.show())
         self.actionNovo.triggered.connect(self.novo)
         
-        self.actionLocalizar.triggered.connect(self.localizar)
+        self.actionLocalizar.triggered.connect(lambda: localizar_window.show())
         
         self.actionFonte.triggered.connect(lambda: fonte_window.show())
         
@@ -30,6 +30,8 @@ class notepad(QtWidgets.QMainWindow):
         self.actionCopiar.triggered.connect(lambda: hotkey("ctrl", "c"))
         self.actionColar.triggered.connect(lambda: hotkey("ctrl", "v"))
         self.actionExcluir.triggered.connect(lambda: hotkey("del"))
+        
+        if QtGui.QKeySequence("Ctrl+F") == True: self.actionLocalizar
     
     ## Funções
     def novo(self):
@@ -63,14 +65,14 @@ class notepad(QtWidgets.QMainWindow):
         self.nova.show()
         
     def salvar_como(self):
-        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Salvar Arquivo", "", "Documentos de Texto (*.txt)")
+        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Salvar Arquivo", "Sem Título", "Documentos de Texto (*.txt)")
 
         if fname[0] != "":
             with open(fname[0], "w") as f:
                 f.write(self.texto.toPlainText())
                 
-        self.setWindowTitle(fname[0].split("/")[-1] + " - Notepad")
-        self.current_file = fname[0]
+            self.setWindowTitle(fname[0].split("/")[-1] + " - Notepad")
+            self.current_file = fname[0]
     
     def salvar(self):
         if self.texto.toPlainText() != "" and self.current_file == None:
@@ -78,6 +80,8 @@ class notepad(QtWidgets.QMainWindow):
         else:
             with open(self.current_file, "w") as f:
                 f.write(self.texto.toPlainText())
+            
+            self.setWindowTitle(self.current_file.split("/")[-1] + " - Notepad")
     
     def abrir(self):
         fname = QtWidgets.QFileDialog.getOpenFileName(self, "Abrir Arquivo", "", "Documentos de Texto (*.txt)")
@@ -89,9 +93,6 @@ class notepad(QtWidgets.QMainWindow):
             # Salvando o diretório do arquivo
             self.current_file = fname[0]
             self.setWindowTitle(fname[0].split("/")[-1] + " - Notepad")
-            
-    def localizar(self):
-        pass
     
     ## Eventos
     def closeEvent(self, event):
@@ -110,7 +111,7 @@ class notepad(QtWidgets.QMainWindow):
             except TypeError:
                 event.accept()
         
-        else:
+        elif self.texto.toPlainText() != "" and self.windowTitle()[0] == "*":
             resposta = self.question()
             
             if resposta == QtWidgets.QMessageBox.Save:
@@ -174,12 +175,47 @@ class fonte(QtWidgets.QMainWindow):
             
             case "Regular":
                 self.exemplo.setStyleSheet("")
-                notepad_window.texto.setStyleSheet("margin: -200;")  
+                notepad_window.texto.setStyleSheet("margin: -200;")
+                
+class localizar(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(localizar, self).__init__()
+        uic.loadUi(r"janelas\localizar.ui", self)
+        
+        self.buscar.clicked.connect(self.search)
+        self.cancelar.clicked.connect(lambda: self.close())
+        
+    def search(self):
+        if self.checkBox.isChecked():
+            if self.up.isChecked():
+                p = notepad_window.texto.find(self.word.text(), QtGui.QTextDocument.FindBackward | QtGui.QTextDocument.FindCaseSensitively)
+            else:
+                p = notepad_window.texto.find(self.word.text(), QtGui.QTextDocument.FindCaseSensitively)
+                
+        else:
+            if self.up.isChecked():
+                p = notepad_window.texto.find(self.word.text(), QtGui.QTextDocument.FindBackward)
+            else:
+                p = notepad_window.texto.find(self.word.text())
+                
+                
+        if not p:
+            if not self.around.isChecked():
+                QtWidgets.QMessageBox.information(self, "Notepad", f'Não é possível encontrar "{self.word.text()}"')
+            else:
+                if self.up.isChecked():
+                    notepad_window.texto.moveCursor(QtGui.QTextCursor.End)
+                else:
+                    notepad_window.texto.moveCursor(QtGui.QTextCursor.Start)
+                    
+                if self.word.text() not in notepad_window.texto.toPlainText():
+                    QtWidgets.QMessageBox.information(self, "Notepad", f'Não é possível encontrar "{self.word.text()}"')
         
 app = QtWidgets.QApplication([])
 
 notepad_window = notepad()
 fonte_window = fonte()
+localizar_window = localizar()
 
 notepad_window.show()
 app.exec()
