@@ -1,6 +1,5 @@
-# Notepad
+# Versão Python
 
-Um projeto simulando um bloco de notas padrão do Windows.
 
 ## Requisitos
 
