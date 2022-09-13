@@ -1,0 +1,9 @@
+/home/kaio/build-Notepad-Desktop_Qt_6_3_1_GCC_64bit-Release/CMakeFiles/Notepad.dir
+/home/kaio/build-Notepad-Desktop_Qt_6_3_1_GCC_64bit-Release/CMakeFiles/edit_cache.dir
+/home/kaio/build-Notepad-Desktop_Qt_6_3_1_GCC_64bit-Release/CMakeFiles/rebuild_cache.dir
+/home/kaio/build-Notepad-Desktop_Qt_6_3_1_GCC_64bit-Release/CMakeFiles/list_install_components.dir
+/home/kaio/build-Notepad-Desktop_Qt_6_3_1_GCC_64bit-Release/CMakeFiles/install.dir
+/home/kaio/build-Notepad-Desktop_Qt_6_3_1_GCC_64bit-Release/CMakeFiles/install/local.dir
+/home/kaio/build-Notepad-Desktop_Qt_6_3_1_GCC_64bit-Release/CMakeFiles/install/strip.dir
+/home/kaio/build-Notepad-Desktop_Qt_6_3_1_GCC_64bit-Release/CMakeFiles/Notepad_autogen_timestamp_deps.dir
+/home/kaio/build-Notepad-Desktop_Qt_6_3_1_GCC_64bit-Release/CMakeFiles/Notepad_autogen.dir
