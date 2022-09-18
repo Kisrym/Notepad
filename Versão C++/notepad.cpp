@@ -23,6 +23,8 @@ Notepad::Notepad(QWidget *parent)
 Notepad::~Notepad()
 {
     delete ui;
+    delete janela;
+    delete localizar;
 }
 
 // Funções auxiliares
