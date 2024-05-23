@@ -1,17 +1,6 @@
-# Versão C++
 
+# Notepad Versão C++
 
-## Requisitos
+Criado utilizando o framework Qt.
 
-Para rodar o projeto é necessário:
-
-* CMake 3.5+
-* QtCreator (por enquanto)
-
-## Como rodar
-
-Tendo o QtCreator, basta abrir o projeto (selecionando todos os arquivos, principalmente o *CMakeLists.txt*)
-
-## Criação de Executável
-
-**Por enquanto não há como criar um executável do projeto. Posteriormente ele será adicionado aqui.**
+Para rodar, é necessário ter o Qt Creator instalado na versão 6 adiante. Ou, caso esteja no Windows, utilizar o **windeployqt**, disponibilizado pelo Qt (https://doc.qt.io/qt-6/windows-deployment.html)

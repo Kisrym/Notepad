@@ -29,7 +29,10 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">margin: -200;</string>
+         <string notr="true">QTextEdit{
+	margin: -200;
+	color: black;
+}</string>
         </property>
        </widget>
       </item>
@@ -43,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>919</width>
-     <height>20</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuArquivo">

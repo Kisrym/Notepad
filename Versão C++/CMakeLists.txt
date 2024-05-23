@@ -15,16 +15,16 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
-        main.cpp
-        notepad.cpp
-        fonte.cpp
-        localizar.cpp
-        notepad.h
-        fonte.h
-        localizar.h
-        notepad.ui
-        fonte.ui
-        localizar.ui
+        src/main.cpp
+        src/notepad.cpp
+        src/fonte.cpp
+        src/localizar.cpp
+        src/notepad.h
+        src/fonte.h
+        src/localizar.h
+        src/notepad.ui
+        src/fonte.ui
+        src/localizar.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

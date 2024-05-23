@@ -1,7 +1,11 @@
 # Notepad
 
-Um projeto simulando um bloco de notas padrão do Windows.
+Um projeto simulando o Bloco de Notas padrão do Windows.
 
-Nele há 2 versões, uma escrita em Python utilizando PyQt5 e a outra escrita em C++ utilizando o próprio QtCreator e o CMake. Recomendo o uso da versão em Python, já que a mesma é mais facilmente instalável.
+Há 2 versões, uma escrita em Python utilizando PyQt5 e a outra escrita em C++ utilizando o Qt e o CMake.
 
-Em cada pasta tem os requisitos e a maneira de rodar. Bom proveito!!
+Em cada versão tem o modo de uso e os requisitos.
+
+![img](img/1photo.png)
+
+![img](img/2photo.png)
